@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="library" class="card">
+  <router-link :to="libraryPath" class="card">
     <h2>{{ props.library.name }}</h2>
     <h3>{{ props.id }}</h3>
   </router-link>
