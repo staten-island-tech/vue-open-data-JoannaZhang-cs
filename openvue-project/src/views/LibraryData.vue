@@ -11,7 +11,7 @@ const route = useRoute()
 const library = ref(null)
 async function getLibrary(id) {
   console.log('did i run?')
-  const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
+  const response = await fetch(`https://data.cityofnewyork.us/resource/5t4n-d72c.json?id=${id}`)
   const data = await response.json()
   library.value = data
 }
