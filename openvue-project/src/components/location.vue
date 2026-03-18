@@ -1,6 +1,6 @@
 <template>
-  <router-link :to="libraryPath" class="card">
-    <h2>{{ props.library.name }}</h2>
+  <router-link :to="pkmnPath" class="card">
+    <h2>{{ props.pokemon.name }}</h2>
     <h3>{{ props.id }}</h3>
   </router-link>
 </template>
@@ -8,7 +8,7 @@
 <script setup>
 import { computed } from 'vue'
 const props = defineProps({
-  library: {
+  pokemon: {
     type: Object,
     required: true,
   },
@@ -17,8 +17,8 @@ const props = defineProps({
     required: true,
   },
 })
-const library = computed(() => {
-  return `/library/${props.library.name}`
+const pkmnPath = computed(() => {
+  return `/pkmn/${props.pokemon.name}`
 })
 </script>
 

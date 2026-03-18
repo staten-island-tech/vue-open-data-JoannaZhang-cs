@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>{{ library.name }}</h2>
+    <h2>{{ location.name }}</h2>
   </div>
 </template>
 
@@ -8,21 +8,21 @@
 import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 const route = useRoute()
-const library = ref(null)
-async function getLibrary(id) {
+const homeless = ref(null)
+async function gethomeless(id) {
   console.log('did i run?')
-  const response = await fetch(`https://data.cityofnewyork.us/resource/5t4n-d72c.json?id=${id}`)
+  const response = await fetch(`https://data.cityofnewyork.us/resource/5t4n-d72c.json${id}`)
   const data = await response.json()
-  library.value = data
+  homeless.value = data
 }
 watch(
   () => route.params.id,
   function (id) {
-    getLibrary(id)
+    gethomeless(id)
   },
 )
 onMounted(function () {
-  getLibrary(route.params.id)
+  gethomeless(route.params.id)
 })
 </script>
 
