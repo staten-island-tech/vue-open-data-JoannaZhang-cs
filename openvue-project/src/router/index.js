@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import homeless from '@/views/HomelessData.vue'
+import Homeless from '@/views/HomelessData.vue'
+import LocationView from '@/views/LocationView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,8 +8,14 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: homeless,
-    }
+      component: Homeless,
+    },
+    {
+      path: '/location/:name',
+      name: 'location',
+      component: LocationView,
+      props: true,
+    },
   ],
 })
 

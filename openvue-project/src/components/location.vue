@@ -1,20 +1,18 @@
 <template>
   <router-link :to="locationPath" class="card">
-    <h2>{{ props.location.name }}</h2>
+    <h2>{{ location.name }}</h2>
   </router-link>
 </template>
 
 <script setup>
 import { computed } from 'vue'
-const props = defineProps({
+const { location } = defineProps({
   location: {
     type: Object,
     required: true,
   },
 })
-const locationPath = computed(() => {
-  return `/location/${props.location.name}`
-})
+const locationPath = computed(() => `/location/${location.id}`)
 </script>
 
 <style scoped>

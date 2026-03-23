@@ -22,9 +22,10 @@ const homeless = ref(null)
 async function gethomeless() {
   const response = await fetch(`https://data.cityofnewyork.us/resource/5t4n-d72c.json`)
   const data = await response.json()
-  homeless.value = data[0] || null
-}
 
+  const name = route.params.name
+  homeless.value = data.find((item) => item.location?.toLowerCase() === name?.toLowerCase()) || null
+}
 
 onMounted(() => {
   gethomeless()
