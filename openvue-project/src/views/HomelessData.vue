@@ -1,9 +1,9 @@
 <template>
   <div class="container">
     <HomelessData
-      v-for="(mon, index) in homeless"
-      :key="homeless.name"
-      :homeless="homeless"
+      v-for="(item, index) in homeless"
+      :key="index"
+      :homeless="item"
       :id="index + 1"
     />
   </div>
@@ -11,9 +11,10 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-
 import HomelessData from '../components/HomelessData.vue'
+
 const homeless = ref([])
+
 async function getHomeless() {
   try {
     const response = await fetch('https://data.cityofnewyork.us/resource/5t4n-d72c.json')
@@ -23,6 +24,7 @@ async function getHomeless() {
     console.log(error)
   }
 }
+
 onMounted(() => {
   getHomeless()
 })

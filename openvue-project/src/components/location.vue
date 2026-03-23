@@ -8,7 +8,7 @@
 <script setup>
 import { computed } from 'vue'
 const props = defineProps({
-  pokemon: {
+  location: {
     type: Object,
     required: true,
   },
@@ -17,7 +17,7 @@ const props = defineProps({
     required: true,
   },
 })
-const pkmnPath = computed(() => {
+const locationPath = computed(() => {
   return `/location/${props.location.name}`
 })
 </script>
