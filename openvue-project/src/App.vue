@@ -1,5 +1,5 @@
 <script setup>
-import LibraryCard from './components/LibraryCard.vue'
+import location from './components/location.vue'
 </script>
 
 <template>
