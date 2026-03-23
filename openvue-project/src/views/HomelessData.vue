@@ -1,43 +1,34 @@
 <template>
-  <div class="container">
-    <HomelessData
-      v-for="(item, index) in homeless"
-      :key="index"
-      :homeless="item"
-      :id="index + 1"
-    />
+  <div>
+    <h2>{{ homeless?.name || 'Loading...' }}</h2>
+    <div v-if="homeless">
+      <p><strong>Year:</strong> {{ homeless.year }}</p>
+      <p><strong>Location:</strong> {{ homeless.location }}</p>
+      <p><strong>Homeless_Estimates:</strong> {{ homeless.estimates }}</p>
+    </div>
+    <div v-else>
+      <p>No data found</p>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import HomelessData from '../components/HomelessData.vue'
+import { onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
 
-const homeless = ref([])
+const route = useRoute()
+const homeless = ref(null)
 
-async function getHomeless() {
-  try {
-    const response = await fetch('https://data.cityofnewyork.us/resource/5t4n-d72c.json')
-    const data = await response.json()
-    homeless.value = data
-  } catch (error) {
-    console.log(error)
-  }
+async function gethomeless() {
+  const response = await fetch(`https://data.cityofnewyork.us/resource/5t4n-d72c.json`)
+  const data = await response.json()
+  homeless.value = data[0] || null
 }
 
+
 onMounted(() => {
-  getHomeless()
+  gethomeless()
 })
 </script>
 
-<style scoped>
-.container {
-  width: 80vw;
-  margin: 30px auto;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-}
-</style>
+<style scoped></style>

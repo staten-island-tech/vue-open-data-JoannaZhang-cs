@@ -1,7 +1,6 @@
 <template>
   <router-link :to="locationPath" class="card">
     <h2>{{ props.location.name }}</h2>
-    <h3>{{ props.id }}</h3>
   </router-link>
 </template>
 
@@ -10,10 +9,6 @@ import { computed } from 'vue'
 const props = defineProps({
   location: {
     type: Object,
-    required: true,
-  },
-  id: {
-    type: Number,
     required: true,
   },
 })
