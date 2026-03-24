@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>{{ homeless?.name || 'Loading...' }}</h2>
+    <h2>{{ homeless?.name || 'Loading' }}</h2>
     <div v-if="homeless">
       <p><strong>Year:</strong> {{ homeless.year }}</p>
       <p><strong>Location:</strong> {{ homeless.location }}</p>
