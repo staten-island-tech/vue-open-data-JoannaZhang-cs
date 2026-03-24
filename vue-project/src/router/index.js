@@ -9,12 +9,6 @@ const router = createRouter({
       name: 'home',
       component: Homeless,
     },
-    {
-      path: '/location/:name',
-      name: 'location',
-      component: LocationView,
-      props: true,
-    },
   ],
 })
 
