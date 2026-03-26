@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h2>{{ homeless?.name || 'Loading' }}</h2>
-    <div v-if="homeless">
-      <p><strong>Year:</strong> {{ homeless.year }}</p>
-      <p><strong>Location:</strong> {{ homeless.location }}</p>
-      <p><strong>Homeless_Estimates:</strong> {{ homeless.estimates }}</p>
+    <h2>{{ 'Homeless Data in NYC' }}</h2>
+    <div v-if="homeless">  
+      <p>Year: {{ homeless.year }}</p>
+      <p>Area: {{ homeless.area }}</p>
+      <p>Homeless Estimates: {{ homeless.estimates }}</p>
     </div>
     <div v-else>
       <p>No data found</p>
@@ -17,18 +17,16 @@ import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-const homeless = ref(null)
+const homeless = ref([])
 
-async function gethomeless() {
+async function getHomeless() {
   const response = await fetch(`https://data.cityofnewyork.us/resource/5t4n-d72c.json`)
   const data = await response.json()
-
-  const name = route.params.name
-  homeless.value = data.find((item) => item.location?.toLowerCase() === name?.toLowerCase()) || null
+  homeless.value = data
 }
 
-onMounted(() => {
-  gethomeless()
+onMounted(function() {
+  getHomeless()
 })
 </script>
 
