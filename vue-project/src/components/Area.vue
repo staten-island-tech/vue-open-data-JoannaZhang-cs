@@ -1,6 +1,7 @@
 <template>
   <router-link :to="areaPath" class="card">
     <h2>{{ area.name }}</h2>
+    <canvas ref="chartRef"><</canvas>
   </router-link>
 </template>
 
@@ -13,6 +14,12 @@ const { area } = defineProps({
   },
 })
 const areaPath = computed(() => `/area/${area}`)
+
+onMounted(() => {
+  
+  getHomeless()
+})
+
 </script>
 
 <style scoped>
