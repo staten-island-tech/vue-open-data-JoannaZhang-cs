@@ -14,18 +14,36 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
 
-const route = useRoute()
 const homeless = ref([])
+const chartRef = ref(null)
 
-async function getHomeless() {
-  const response = await fetch(`https://data.cityofnewyork.us/resource/5t4n-d72c.json`)
-  const data = await response.json()
-  homeless.value = data
+const getHomeless = async () => {
+  try {
+    const response = await fetch(`https://data.cityofnewyork.us/resource/5t4n-d72c.json`)    
+    const data = await response.json()
+    
+    new Chart(chartRef.value, {
+      type: 'bar',
+      data: {
+        labels: data.labels,
+        datasets: [{
+          label: 'Homeless Count',
+          data: data.values,
+          backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    })
+  } catch (error) {
+    console.error('error')
+  }
 }
 
-onMounted(function() {
+onMounted(() => {
   getHomeless()
 })
 </script>
