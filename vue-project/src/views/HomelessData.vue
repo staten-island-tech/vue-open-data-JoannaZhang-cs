@@ -3,10 +3,10 @@
     <h2>Homeless Data in NYC</h2>
     <div v-if="homeless">
       <!-- <div v-if="homeless.lenth"> -->
-      <div v-for="item in homeless" :key="item.year + item.area">
+      <div v-for="item in homeless.slice(0, 10)" :key="item.year">
         <p>Year: {{ item.year }}</p>
         <p>Area: {{ item.area }}</p>
-        <p>Homeless Estimates: {{ item.estimates }}</p>
+        <p>Homeless Estimates: {{ item.homeless_estimates }}</p>
       </div>
     </div>
     <div v-else>
@@ -29,6 +29,14 @@ const getHomeless = async () => {
       `https://data.cityofnewyork.us/resource/5t4n-d72c.json`,
     );
     const data = await response.json();
+
+    console.log(data);
+    homeless.value = data;
+
+    const labels = data.slice(0, 10).map((item) => item.year);
+    const values = data
+      .slice(0, 10)
+      .map((item) => Number(item.estimates || item.homeless_estimate));
 
     new Chart(chartRef.value, {
       type: "bar",
