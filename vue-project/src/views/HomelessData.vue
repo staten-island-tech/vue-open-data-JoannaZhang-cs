@@ -36,24 +36,30 @@ const getHomeless = async () => {
     const labels = data.slice(0, 10).map((item) => item.year);
     const values = data
       .slice(0, 10)
-      .map((item) => Number(item.estimates || item.homeless_estimate));
+      .map((item) => Number(item.homeless_estimates));
 
     new Chart(chartRef.value, {
       type: "bar",
       data: {
-        labels: data.labels,
+        labels: labels,
         datasets: [
           {
             label: "Homeless Count",
-            data: data.values,
+            data: values,
             backgroundColor: "rgba(75, 192, 192, 0.6)",
           },
         ],
       },
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
+        scales: {
+          y: {
+            min: 0,
+            max: 5000,
+          },
+        },
       },
+      responsive: true,
+      maintainAspectRatio: false,
     });
   } catch (error) {
     console.error("error");
