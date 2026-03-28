@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Area v-for="area in HomelessData" :key="area.name" />
+    <Area v-for="item in area" :key="item.id" :area="item" />
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 import { ref, onMounted } from "vue";
 
 import Area from "@/components/Area.vue";
-import HomelessData from "./HomelessData.vue";
+
 const area = ref([]);
 async function getHomeless() {
   try {
@@ -16,7 +16,7 @@ async function getHomeless() {
       "https://data.cityofnewyork.us/resource/5t4n-d72c.json",
     );
     const data = await response.json();
-    area.value = data.results;
+    area.value = data;
   } catch (error) {
     console.log(error);
   }
