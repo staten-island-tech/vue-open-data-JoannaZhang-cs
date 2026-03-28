@@ -5,23 +5,25 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted } from "vue";
 
-import Area from '@/components/Area.vue'
-import HomelessData from './HomelessData.vue'
-const area = ref([])
+import Area from "@/components/Area.vue";
+import HomelessData from "./HomelessData.vue";
+const area = ref([]);
 async function getHomeless() {
   try {
-    const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=151&offset=0')
-    const data = await response.json()
-    area.value = data.results
+    const response = await fetch(
+      "https://data.cityofnewyork.us/resource/5t4n-d72c.json",
+    );
+    const data = await response.json();
+    area.value = data.results;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 onMounted(() => {
-  getHomeless()
-})
+  getHomeless();
+});
 </script>
 
 <style scoped>
