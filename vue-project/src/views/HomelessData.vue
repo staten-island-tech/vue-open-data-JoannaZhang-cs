@@ -30,7 +30,7 @@ const getHomeless = async () => {
     );
     const data = await response.json();
 
-    console.log(data);
+    console.log(data[0]);
     homeless.value = data;
 
     const labels = data.slice(0, 10).map((item) => item.year);
@@ -38,6 +38,28 @@ const getHomeless = async () => {
       .slice(0, 10)
       .map((item) => Number(item.homeless_estimates));
 
+    const colors = data.slice(0, 10).map((item) => {
+      switch (item.area) {
+        case "Surface Area - Manhattan ":
+          return "rgba(255, 99, 132, 0.5)";
+        case "Surface Area - Brooklyn ":
+          return "rgba(54, 162, 235, 0.5)";
+        case "Surface Area - Queens ":
+          return "rgba(255, 206, 86, 0.5)";
+        case "Surface Area - Bronx ":
+          return "rgba(75, 192, 192, 0.5)";
+        case "Surface Area - Staten Island ":
+          return "rgba(153, 102, 255, 0.5)";
+        case "Subways ":
+          return "gray";
+        case "Surface Total ":
+          return "black";
+        case "Total Unsheltered Individuals ":
+          return "brown";
+        default:
+          return "pink";
+      }
+    });
     new Chart(chartRef.value, {
       type: "bar",
       data: {
@@ -46,7 +68,7 @@ const getHomeless = async () => {
           {
             label: "Homeless Count",
             data: values,
-            backgroundColor: "rgba(75, 192, 192, 0.6)",
+            backgroundColor: colors,
           },
         ],
       },
