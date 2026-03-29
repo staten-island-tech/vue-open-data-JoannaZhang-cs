@@ -17,7 +17,7 @@
     <div v-else>
       <p>No data found</p>
     </div>
-    <RouterLink to="/chart2">Go to Second Chart</RouterLink>
+    <RouterLink to="/chart2">View Chart Filtered by Location</RouterLink>
 
     <canvas ref="chartRef"></canvas>
   </div>
