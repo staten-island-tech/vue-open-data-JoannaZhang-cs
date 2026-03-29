@@ -39,9 +39,8 @@ const selectedArea = ref("all");
 
 const filteredData = computed(() => {
   return homeless.value.filter((item) => {
-    const matchYear = item.year === "2012"; // or make this dynamic later
-    const matchArea =
-      selectedArea.value === "all" || item.area.trim() === selectedArea.value;
+    const matchYear = item.year === "2012";
+    selectedArea.value === "all" || item.area.trim() === selectedArea.value;
 
     return matchYear && matchArea;
   });
@@ -58,7 +57,7 @@ const getHomeless = async () => {
 
     const filtered = filteredData.value;
     const points = filtered.map((item) => ({
-      x: item.area.trim(), // remove trailing space
+      x: item.area.trim(), // removes the trailing space
       y: Number(item.homeless_estimates),
     }));
 
