@@ -53,15 +53,14 @@ const getHomeless = async () => {
       `https://data.cityofnewyork.us/resource/5t4n-d72c.json`,
     );
     const data = await response.json();
+    console.log(data[0]);
+    homeless.value = data;
 
     const filtered = filteredData.value;
     const points = filtered.map((item) => ({
       x: item.area.trim(), // remove trailing space
       y: Number(item.homeless_estimates),
     }));
-
-    console.log(data[0]);
-    homeless.value = data;
 
     const colors = filtered.map((item) => {
       const area = item.area.trim(); // removes trailing space behind location name in api data
