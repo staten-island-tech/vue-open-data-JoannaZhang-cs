@@ -12,8 +12,6 @@
     <div v-else>
       <p>No data found</p>
     </div>
-    <RouterLink to="/chart2">Go to Second Chart</RouterLink>
-
     <canvas ref="chartRef"></canvas>
   </div>
 </template>
@@ -23,7 +21,7 @@ import { onMounted, ref } from "vue";
 import Chart from "chart.js/auto";
 
 const homeless = ref([]);
-const chartRef = ref(null);
+const chartRef = ref();
 
 const getHomeless = async () => {
   try {
@@ -32,64 +30,72 @@ const getHomeless = async () => {
     );
     const data = await response.json();
 
+    const filtered = data.filter((item) => item.year === "2012");
+    const points = filtered.map((item) => ({
+      x: item.area.trim(), // remove trailing space
+      y: Number(item.homeless_estimates),
+    }));
+
     console.log(data[0]);
     homeless.value = data;
 
-    const labels = data.slice(0, 10).map((item) => item.year);
-    const values = data
-      .slice(0, 10)
-      .map((item) => Number(item.homeless_estimates));
-
-    const colors = data.slice(0, 10).map((item) => {
-      switch (item.area) {
-        case "Surface Area - Manhattan ":
+    const colors = filtered.map((item) => {
+      const area = item.area.trim(); // removes trailing space behind location name in api data
+      switch (area) {
+        case "Surface Area - Manhattan":
           return "rgba(255, 99, 132, 0.5)";
-        case "Surface Area - Brooklyn ":
+        case "Surface Area - Brooklyn":
           return "rgba(54, 162, 235, 0.5)";
-        case "Surface Area - Queens ":
+        case "Surface Area - Queens":
           return "rgba(255, 206, 86, 0.5)";
-        case "Surface Area - Bronx ":
+        case "Surface Area - Bronx":
           return "rgba(75, 192, 192, 0.5)";
-        case "Surface Area - Staten Island ":
+        case "Surface Area - Staten Island":
           return "rgba(153, 102, 255, 0.5)";
-        case "Subways ":
+        case "Subways":
           return "gray";
-        case "Surface Total ":
+        case "Surface Total":
           return "black";
-        case "Total Unsheltered Individuals ":
+        case "Total Unsheltered Individuals":
           return "brown";
         default:
           return "pink";
       }
     });
     new Chart(chartRef.value, {
-      type: "bar",
+      type: "scatter",
       data: {
-        labels: labels,
         datasets: [
           {
-            label: "Homeless Count",
-            data: values,
+            label: "Homeless Estimates",
+            data: points,
             backgroundColor: colors,
           },
         ],
       },
       options: {
         scales: {
+          x: {
+            type: "category",
+            title: {
+              display: true,
+              text: "Area",
+            },
+          },
           y: {
-            min: 0,
-            max: 5000,
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: "Homeless Estimates",
+            },
           },
         },
       },
-      responsive: true,
-      maintainAspectRatio: false,
     });
   } catch (error) {
     console.error("error");
   }
 };
-
 onMounted(() => {
   getHomeless();
 });
