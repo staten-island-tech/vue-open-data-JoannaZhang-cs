@@ -7,7 +7,6 @@
     </select>
     <p v-if="error">{{ error }}</p>
     <div v-if="homeless">
-      <!-- <div v-if="homeless.lenth"> -->
       <div v-for="item in filteredData" :key="item.year">
         <p>Year: {{ item.year }}</p>
         <p>Area: {{ item.area }}</p>
