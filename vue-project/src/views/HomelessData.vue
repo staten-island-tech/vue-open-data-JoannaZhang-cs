@@ -1,9 +1,14 @@
 <template>
   <div>
     <h2>Homeless Data in NYC</h2>
+    <select v-model="selectedYear">
+      <option value="2012">2012</option>
+      <option value="2011">2011</option>
+    </select>
+    <p v-if="error">{{ error }}</p>
     <div v-if="homeless">
       <!-- <div v-if="homeless.lenth"> -->
-      <div v-for="item in homeless.slice(0, 10)" :key="item.year">
+      <div v-for="item in filteredData" :key="item.year">
         <p>Year: {{ item.year }}</p>
         <p>Area: {{ item.area }}</p>
         <p>Homeless Estimates: {{ item.homeless_estimates }}</p>
@@ -19,11 +24,18 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import Chart from "chart.js/auto";
 
 const homeless = ref([]);
-const chartRef = ref(null);
+const chartRef = ref();
+const error = ref();
+const selectedYear = ref("2012");
+
+const filteredData = computed(() => {
+  //depends on homeless and selected yr so must be near top of script setup
+  return homeless.value.filter((item) => item.year === selectedYear.value);
+});
 
 const getHomeless = async () => {
   try {
@@ -87,6 +99,7 @@ const getHomeless = async () => {
     });
   } catch (error) {
     console.error("error");
+    error.value = "failed to load data";
   }
 };
 

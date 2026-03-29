@@ -1,9 +1,21 @@
 <template>
   <div>
     <h2>Homeless Data in NYC</h2>
+    <select v-model="selectedArea">
+      <option value="all">All Locations</option>
+      <option value="Surface Area - Manhattan">Manhattan</option>
+      <option value="Surface Area - Brooklyn">Brooklyn</option>
+      <option value="Surface Area - Queens">Queens</option>
+      <option value="Surface Area - Bronx">Bronx</option>
+      <option value="Surface Area - Staten Island">Staten Island</option>
+      <option value="Subways">Subways</option>
+      <option value="Surface Total">Total Surface</option>
+    </select>
+    <p v-if="error">{{ error }}</p>
+
     <div v-if="homeless">
-      <!-- <div v-if="homeless.lenth"> -->
-      <div v-for="item in homeless.slice(0, 10)" :key="item.year">
+      <!-- <div v-if="homeless.length"> -->
+      <div v-for="item in filteredData" :key="item.year">
         <p>Year: {{ item.year }}</p>
         <p>Area: {{ item.area }}</p>
         <p>Homeless Estimates: {{ item.homeless_estimates }}</p>
@@ -17,11 +29,23 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import Chart from "chart.js/auto";
 
 const homeless = ref([]);
 const chartRef = ref();
+const error = ref("");
+const selectedArea = ref("all");
+
+const filteredData = computed(() => {
+  return homeless.value.filter((item) => {
+    const matchYear = item.year === "2012"; // or make this dynamic later
+    const matchArea =
+      selectedArea.value === "all" || item.area.trim() === selectedArea.value;
+
+    return matchYear && matchArea;
+  });
+});
 
 const getHomeless = async () => {
   try {
@@ -30,7 +54,7 @@ const getHomeless = async () => {
     );
     const data = await response.json();
 
-    const filtered = data.filter((item) => item.year === "2012");
+    const filtered = filteredData.value;
     const points = filtered.map((item) => ({
       x: item.area.trim(), // remove trailing space
       y: Number(item.homeless_estimates),
@@ -94,8 +118,10 @@ const getHomeless = async () => {
     });
   } catch (error) {
     console.error("error");
+    error.value = "failed to load data";
   }
 };
+
 onMounted(() => {
   getHomeless();
 });
